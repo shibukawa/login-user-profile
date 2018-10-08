@@ -1,6 +1,7 @@
 # login-user-info
 
 [![TypeScript](https://badges.frapsoft.com/typescript/code/typescript.png?v=101)](https://github.com/ellerbrock/typescript-badges/)
+[![Build Status](https://travis-ci.org/shibukawa/login-user-profile.svg?branch=master)](https://travis-ci.org/shibukawa/login-user-profile)
 
 This package gets current user info:
 
