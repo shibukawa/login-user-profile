@@ -18,7 +18,7 @@ export async function getLoginUserProfile(
 ): Promise<IProfile> {
     const result: IProfile = {};
 
-    const { name, email, url } = await parseGitSetting(opts.cwd);
+    const { name, email, url } = await parseGitSetting({ cwd: opts.cwd });
 
     result.name = name;
     result.email = email;
