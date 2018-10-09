@@ -8,3 +8,6 @@ node_modules/
 .vscode
 .gitignore
 .npmignore
+types/
+*.tgz
+jest.config.js 
