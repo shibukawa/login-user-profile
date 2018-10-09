@@ -23,11 +23,18 @@ function parseGitResult(stdout: string): IGitUser {
     return result;
 }
 
-export async function parseGitSetting(cwd?: string): Promise<IGitUser> {
+interface IOption {
+    cwd?: string;
+    file?: string;
+}
+
+export async function parseGitSetting(opts: IOption = {}): Promise<IGitUser> {
     const command = "git config -l";
     let result;
-    if (cwd) {
-        result = await execAsync(command, { cwd });
+    if (opts.cwd) {
+        result = await execAsync(command, { cwd: opts.cwd });
+    } else if (opts.file) {
+        result = await execAsync(`${command} --file ${opts.file}`);
     } else {
         result = await execAsync(command);
     }
