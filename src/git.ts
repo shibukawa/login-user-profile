@@ -1,4 +1,7 @@
 import { exec } from "child_process";
+import { promisify } from "util";
+
+const execAsync = promisify(exec);
 
 interface IGitUser {
     name?: string;
@@ -22,23 +25,11 @@ function parseGitResult(stdout: string): IGitUser {
 
 export async function parseGitSetting(cwd?: string): Promise<IGitUser> {
     const command = "git config -l";
-    return new Promise<IGitUser>((resolve, reject) => {
-        if (cwd) {
-            exec(command, { cwd }, (err, stdout) => {
-                if (err) {
-                    reject(err);
-                    return;
-                }
-                resolve(parseGitResult(stdout));
-            });
-        } else {
-            exec(command, (err, stdout) => {
-                if (err) {
-                    reject(err);
-                    return;
-                }
-                resolve(parseGitResult(stdout));
-            });
-        }
-    });
+    let result;
+    if (cwd) {
+        result = await execAsync(command, { cwd });
+    } else {
+        result = await execAsync(command);
+    }
+    return parseGitResult(result.stdout);
 }

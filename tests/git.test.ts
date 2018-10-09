@@ -1,17 +1,18 @@
 import { exec } from "child_process";
 import { join } from "path";
+import sleep from "sleep-promise";
+import { promisify } from "util";
+
+const execAsync = promisify(exec);
 
 import { parseGitSetting } from "../src/git";
 
-beforeAll(() => {
+beforeAll(async () => {
     // todo: Windows
     const src = join(__dirname, "dummy", "_git");
     const dest = join(__dirname, "dummy", ".git");
-    return new Promise(resolve => {
-        exec(`cp -r ${src} ${dest}`, () => {
-            resolve();
-        });
-    });
+    await execAsync(`cp -r ${src} ${dest}`);
+    await sleep(500);
 });
 
 test("get user information from git setting", async () => {
@@ -22,12 +23,9 @@ test("get user information from git setting", async () => {
     expect(result.url).toBe("https://github.com/dummy-user");
 });
 
-afterAll(() => {
+afterAll(async () => {
     // todo: Windows
     const dest = join(__dirname, "dummy", ".git");
-    return new Promise(resolve => {
-        exec(`rm -rf ${dest}`, () => {
-            resolve();
-        });
-    });
+    await exec(`rm -rf ${dest}`);
+    await sleep(500);
 });
